@@ -1,0 +1,4 @@
+int x = 10;
+string name = "Zenith";
+writeln(x);
+writeln(name);
