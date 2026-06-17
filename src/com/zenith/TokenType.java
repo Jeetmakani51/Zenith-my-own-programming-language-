@@ -1,6 +1,6 @@
 
 package com.zenith;
-enum TokenType {
+public enum TokenType {
     //SINGLE CHARACTER TOKEN
     LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
     COMMA,MINUS, PLUS, SLASH, SEMICOLON, STAR,PERCENT,
