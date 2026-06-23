@@ -120,11 +120,28 @@ public class Parser {
     }
     private Expr primary() {
         if (match(FALSE)) return new Expr.Literal(false);
-        if (match(TRUE)) return new Expr.Literal(true);
-        //if (match(NIL)) return new Expr.Literal(null);
+        if (match(TRUE))  return new Expr.Literal(true);
 
         if (match(INTEGER, FLOAT, STRING)) {
             return new Expr.Literal(previous().literal);
+        }
+
+        if (match(IDENTIFIER)) {
+            Expr expr = new Expr.Variable(previous());
+
+            // function call
+            if (match(LEFT_PAREN)) {
+                List<Expr> arguments = new ArrayList<>();
+                if (!check(RIGHT_PAREN)) {
+                    do {
+                        arguments.add(expression());
+                    } while (match(COMMA));
+                }
+                consume(RIGHT_PAREN, "Expect ')' after arguments.");
+                return new Expr.Call(expr, arguments);
+            }
+
+            return expr;
         }
 
         if (match(LEFT_PAREN)) {
@@ -133,10 +150,7 @@ public class Parser {
             return new Expr.Grouping(expr);
         }
 
-        if (match(IDENTIFIER)){
-            return new Expr.Variable(previous());
-        }
-        throw error(peek(), "Expect expression");
+        throw error(peek(), "Expect expression.");
     }
 
     private Token consume(TokenType type, String message) {

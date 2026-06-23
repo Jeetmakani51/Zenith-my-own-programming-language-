@@ -112,3 +112,21 @@ parse() → returns List<Stmt> representing the entire program
 
 [line N] Error at 'token': message
 [line N] Error at end: message ← for EOF errors
+
+## Zenith Language — Status: COMPLETE ✅
+
+Full pipeline working end to end.
+Tested features:
+
+- Variable declaration: int, float, string, bool
+- Arithmetic: +, -, \*, /, %
+- Comparison: ==, !=, <, >, <=, >=
+- Logical: !, &&, ||
+- If / else
+- While loops
+- For loops (desugared to while)
+- Functions with parameters and return values
+- Nested function calls
+- writeln output
+- Block scoping
+- Error reporting with line numbers

@@ -1,4 +1,12 @@
-int x = 10;
-string name = "Zenith";
-writeln(x);
-writeln(name);
+fn add(int a, int b) -> int{
+    return a + b;
+}
+
+int result = add(5,1);
+writeln(result);
+
+fn greet(string name) -> string{
+    return name;
+}
+
+writeln(greet("Zenith"));

@@ -12,6 +12,7 @@ import com.zenith.ast.Stmt;
 
 public class Main {
     static boolean hadError = false;
+    static boolean hadRuntimeError = false;
     public static void main(String[] args) throws IOException{
         if(args.length > 1){
             System.err.println("Usage: zenith [file.zn]");
@@ -26,7 +27,7 @@ public class Main {
     private static void runFile(String path) throws IOException{
         byte[] bytes = Files.readAllBytes(Paths.get(path)); //give path to a file, it reads it and executes it
         run(new String(bytes, Charset.defaultCharset()));
-        if (hadError) System.exit(65);
+        if (hadError) System.exit(70);
     }
 
     //REPL
@@ -45,14 +46,14 @@ public class Main {
     private static void run(String source){
         Lexer lexer = new Lexer(source);
         List<Token> tokens = lexer.scanTokens();
+        if(hadError) return;
 
         Parser parser = new Parser(tokens);
         List<Stmt> statements = parser.parse();
         if(hadError) return;
-        System.out.println("Parsed" + statements.size() + " statements.");
-        for(Token token : tokens){
-            System.out.println(token);
-        }
+
+        Interpreter interpreter = new Interpreter();
+        interpreter.interpret(statements);
         
     }
 
@@ -72,5 +73,10 @@ public class Main {
 private static void report(int line, String where, String message) {
         System.err.println("[line " + line + "] Error" + where + ": " + message);
         hadError = true;
+    }
+
+    static void runtimeError(Environment.RuntimeError error) {
+        System.err.println("[line " + error.token.line + "] Runtime Error: " + error.getMessage());
+        hadRuntimeError = true;
     }
 }
